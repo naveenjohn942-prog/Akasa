@@ -10,7 +10,7 @@ import java.util.List;
 public class Mapper {
     public UserDTO convertToDto(Users users){
         UserDTO userDTO = new UserDTO();
-        userDTO.setId(users.getId());
+        userDTO.setId(users.getUserId());
         userDTO.setFirstName(users.getFirstName());
         userDTO.setLastName(users.getLastName());
         userDTO.setEmail(users.getEmail());
@@ -22,7 +22,7 @@ public class Mapper {
 
     public Users convertToEntity(UserDTO userDTO){
         Users users = new Users();
-        users.setId(userDTO.getId());
+        users.setUserId(userDTO.getId());
         users.setFirstName(userDTO.getFirstName());
         users.setLastName(userDTO.getLastName());
         users.setEmail(userDTO.getEmail());

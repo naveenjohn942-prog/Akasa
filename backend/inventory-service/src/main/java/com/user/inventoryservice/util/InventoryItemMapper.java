@@ -7,7 +7,7 @@ import com.user.inventoryservice.model.dto.InventoryItemDTO;
 public class InventoryItemMapper {
     public static InventoryItemDTO toDTO(InventoryItem inventoryItem) {
         return new InventoryItemDTO(
-                inventoryItem.getId(),
+                inventoryItem.getProductId(),
                 inventoryItem.getName(),
                 inventoryItem.getCategory(),
                 inventoryItem.getStock(),

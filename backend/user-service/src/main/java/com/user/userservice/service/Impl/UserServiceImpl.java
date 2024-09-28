@@ -15,8 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-
+    @Autowired
+    private PasswordEncoder encoder;
     @Override
     public List<Users> getAllUsers() {
         return userRepository.findAll();
