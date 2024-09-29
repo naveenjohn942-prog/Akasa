@@ -15,6 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+//    @Autowired
+//    private JwtService jwtService;
     @Autowired
     private PasswordEncoder encoder;
     @Override
@@ -48,4 +50,13 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Integer id) {
         userRepository.deleteById(id);
     }
+//
+//    @Override
+//    public String generateToken(String username) {
+//        return jwtService.generateToken(username);
+//    }
+//    @Override
+//    public void validateToken(String token) {
+//        jwtService.validateToken(token);
+//    }
 }

@@ -35,6 +35,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void addItemToCart(Integer userId, Long itemId, int quantity) {
         ResponseEntity<UserDTO> userResponse = userServiceFeignClient.getUserById(userId);
+
         if (userResponse.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException("User not found");
         }
@@ -63,6 +64,8 @@ public class CartServiceImpl implements CartService {
         } else {
             CartItem newItem = new CartItem();
             newItem.setItemId(itemDTO.getId());
+            newItem.setProductId(itemDTO.getId());
+            newItem.setUserId(Long.valueOf(userId));
             newItem.setItemName(itemDTO.getName());
             newItem.setPrice(itemDTO.getPrice());
             newItem.setQuantity(quantity);

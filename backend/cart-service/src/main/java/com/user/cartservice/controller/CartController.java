@@ -2,6 +2,7 @@ package com.user.cartservice.controller;
 
 import com.user.cartservice.model.dto.CartDTO;
 import com.user.cartservice.service.CartService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,10 @@ public class CartController {
     }
 
     @GetMapping("/view")
-    public ResponseEntity<CartDTO> viewCart(@RequestParam Integer userId) {
+    public ResponseEntity<CartDTO> viewCart(@RequestParam Integer userId, HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        System.out.println("Authorization Header in CartService: " + authorizationHeader);
+
         CartDTO cartDTO = cartService.viewCart(userId);
         return new ResponseEntity<>(cartDTO, HttpStatus.OK);
     }

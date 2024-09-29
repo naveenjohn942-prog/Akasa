@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "InventoryService")
+@FeignClient(name = "InventoryService", url = "http://localhost:8082")
 public interface InventoryServiceFeignClient {
-    @GetMapping("/items/{id}")
+    @GetMapping("/inventory/items/{id}")
     ResponseEntity<InventoryItemDTO> getItemById(@PathVariable("id") Long id);
 }

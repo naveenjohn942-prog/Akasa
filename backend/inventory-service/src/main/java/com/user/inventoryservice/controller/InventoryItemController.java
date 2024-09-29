@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/inventory")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class InventoryItemController {
     private final InventoryService inventoryService;
 
@@ -87,7 +88,9 @@ public class InventoryItemController {
     @GetMapping("/items/image/{filename:.+}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
         try {
-            Path imagePath = Paths.get(Utility.Upload_Path + File.separator + filename);
+            String filePath = Utility.Upload_Path + File.separator + filename;
+            System.out.println("Trying to access file: " + filePath);  // Log the file path
+            Path imagePath = Paths.get(filePath);
             Resource resource = new UrlResource(imagePath.toUri());
 
             if (resource.exists() || resource.isReadable()) {
@@ -102,11 +105,16 @@ public class InventoryItemController {
         }
     }
 
+
     @GetMapping("/items/category/{category}")
     public ResponseEntity<List<InventoryItemDTO>> getItemsByCategory(@PathVariable String category) {
         List<InventoryItem> items = inventoryService.getItemsByCategory(category);
         List<InventoryItemDTO> itemDTOs = items.stream()
-                .map(InventoryItemMapper::toDTO)
+                .map(item -> {
+                    InventoryItemDTO dto = InventoryItemMapper.toDTO(item);
+                    dto.setImage("http://localhost:8082/inventory/items/image/" + item.getImage());
+                    return dto;
+                })
                 .collect(Collectors.toList());
         return new ResponseEntity<>(itemDTOs, HttpStatus.OK);
     }
@@ -122,5 +130,28 @@ public class InventoryItemController {
         inventoryService.updateStock(id, updateStockRequest.getStock(),updateStockRequest.getPrice());
         return new ResponseEntity<>("Stock updated successfully", HttpStatus.OK);
     }
+
+    @GetMapping("/items/checkStock")
+    public ResponseEntity<Boolean> checkStock(@RequestParam Long itemId, @RequestParam int quantity) {
+        boolean isStockAvailable = inventoryService.checkStock(itemId, quantity);
+        if (isStockAvailable) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/items/deductStock")
+    public ResponseEntity<String> deductStock(@RequestParam Long itemId, @RequestParam int quantity) {
+        try {
+            inventoryService.deductStock(itemId, quantity);
+            return new ResponseEntity<>("Stock deducted successfully", HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to deduct stock: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }

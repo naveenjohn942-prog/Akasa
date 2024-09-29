@@ -10,4 +10,7 @@ public interface InventoryService {
     List<InventoryItem> getItemsByCategory(String category);
     InventoryItem createItem(InventoryItem item);
     void updateStock(Long id, int stock,double price);
+    boolean checkStock(Long itemId, int quantity);
+    void deductStock(Long itemId, int quantity);
+
 }

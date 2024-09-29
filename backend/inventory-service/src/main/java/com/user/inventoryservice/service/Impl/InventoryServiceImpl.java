@@ -45,4 +45,27 @@ public class InventoryServiceImpl implements InventoryService {
         existingItem.setPrice(price);
         inventoryRepository.save(existingItem);
     }
+
+    @Override
+    public boolean checkStock(Long itemId, int quantity) {
+        InventoryItem item = inventoryRepository.findById(itemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Item not found with id: " + itemId));
+
+        return item.getStock() >= quantity;
+    }
+
+    @Override
+    public void deductStock(Long itemId, int quantity) {
+        InventoryItem item = inventoryRepository.findById(itemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Item not found with id: " + itemId));
+
+        if (item.getStock() < quantity) {
+            throw new IllegalArgumentException("Insufficient stock for item ID: " + itemId);
+        }
+
+        item.setStock(item.getStock() - quantity);
+        inventoryRepository.save(item);
+    }
+
+
 }

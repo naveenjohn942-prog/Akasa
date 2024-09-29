@@ -10,4 +10,6 @@ public interface UserService {
     void createUser(Users user);
     void updateUser(Integer id, Users user);
     void deleteUser(Integer id);
+//    String generateToken(String username);
+//    void validateToken(String token);
 }

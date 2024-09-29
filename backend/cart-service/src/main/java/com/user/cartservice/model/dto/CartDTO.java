@@ -4,6 +4,7 @@ import com.user.cartservice.model.CartItem;
 import lombok.*;
 
 import java.util.List;
+
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,8 +21,7 @@ public class CartDTO {
 
         // Map CartItem objects to CartItemDTO objects
         this.items = items.stream()
-                .map(item -> new CartItemDTO(item.getItemId(), item.getQuantity(), item.getItemName(), item.getPrice()))
+                .map(item -> new CartItemDTO(item.getProductId(), item.getItemId(), item.getQuantity(), item.getItemName(), item.getPrice()))
                 .toList();
     }
-
 }

@@ -16,6 +16,7 @@ public class Mapping {
         List<CartItemDTO> itemDTOs = cart.getItems().stream().map(item -> {
             CartItemDTO dto = new CartItemDTO();
             dto.setItemId(item.getItemId());
+            dto.setProductId(item.getProductId());
             dto.setItemName(item.getItemName());
             dto.setPrice(item.getPrice());
             dto.setQuantity(item.getQuantity());

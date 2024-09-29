@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="IU-241.17011.79">
+    <data-source name="akasa@localhost" uuid="0b39038b-ff4f-4ec1-9e5e-43826795631a">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="POSTGRES" />
+      <user-name>postgres</user-name>
+      <schema-mapping />
+    </data-source>
+    <data-source name="akasa@localhost" uuid="569362c0-45dd-4432-8ba0-0772931b9027">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="POSTGRES" />
+      <user-name>postgres</user-name>
+      <schema-mapping />
+    </data-source>
+    <data-source name="akasa@localhost" uuid="2f892999-35d0-40fe-b5dd-a2a98975341a">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="POSTGRES" />
+      <user-name>postgres</user-name>
+      <schema-mapping />
+    </data-source>
+    <data-source name="akasa@localhost" uuid="2a23f432-75a7-4385-b6fd-65d6186f15ca">
+      <database-info product="PostgreSQL" version="16.3" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.6.0" dbms="POSTGRES" exact-version="16.3" exact-driver-version="42.6">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <user-name>postgres</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="database" qname="@">
+            <node kind="schema" qname="@" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
+  </component>
+</project>
