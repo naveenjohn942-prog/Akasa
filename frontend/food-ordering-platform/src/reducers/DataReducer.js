@@ -6,6 +6,10 @@ const DataReducer = (state, action) => {
         return {...state, category: action.category};
     case "GET_CATEGORY_NAME": 
     return {...state, categoryName: action.categoryName};
+    case "USER":
+        return {...state, user: action.user};
+    case "CART": 
+    return {...state, cart: action.cart}
     
     }
 }

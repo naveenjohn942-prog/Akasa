@@ -7,6 +7,8 @@ import LandingPage from './component/index';
 import './index.css';
 import Home from './component/Home';
 import { DataProvider } from './context/DataContext';
+import Login from './component/Login';
+import Cart from './component/Cart';
 // import Navbar from './component/navbar';
 
 function App() {
@@ -18,7 +20,9 @@ function App() {
         <Route path="/" element={<LandingPage />} />
           <Route path="/inventory" element={<InventoryList />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/Home" element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </div>
 

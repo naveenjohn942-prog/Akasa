@@ -6,13 +6,15 @@ import com.user.inventoryservice.model.dto.InventoryItemDTO;
 
 public class InventoryItemMapper {
     public static InventoryItemDTO toDTO(InventoryItem inventoryItem) {
+        String imageUrl = "http://localhost:9000/items/image/" + inventoryItem.getImage();
         return new InventoryItemDTO(
                 inventoryItem.getProductId(),
                 inventoryItem.getName(),
                 inventoryItem.getCategory(),
                 inventoryItem.getStock(),
                 inventoryItem.getPrice(),
-                inventoryItem.getImage()
+                inventoryItem.getImage(),
+                imageUrl
         );
     }
 

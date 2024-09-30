@@ -1,6 +1,7 @@
 package com.user.gateway.controller;
 
 
+import com.user.gateway.model.AuthResponse;
 import com.user.gateway.model.Users;
 import com.user.gateway.util.JwtUtil;
 import com.user.gateway.model.AuthRequest;
@@ -22,7 +23,7 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
         // Call the UserService to authenticate the user
         String url = "http://localhost:8080/user/authenticate";
         ResponseEntity<Users> response = restTemplate.postForEntity(url, authRequest, Users.class);
@@ -30,9 +31,13 @@ public class AuthController {
         if (response.getStatusCode().is2xxSuccessful()) {
             Users user = response.getBody();
             String token = jwtUtil.generateToken(user.getEmail());
-            return ResponseEntity.ok(token);
+
+            // Create the response object with the token and user details
+            AuthResponse authResponse = new AuthResponse(token, user);
+            return ResponseEntity.ok(authResponse);
         } else {
-            return ResponseEntity.status(401).body("Invalid credentials");
+            return ResponseEntity.status(401).body(null);
         }
     }
+
 }

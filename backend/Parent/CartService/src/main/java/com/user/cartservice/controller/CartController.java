@@ -17,7 +17,8 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addItemToCart(@RequestParam Integer userId,@RequestParam Long itemId,@RequestParam int quantity) {
+    public ResponseEntity<String> addItemToCart(@RequestParam Integer userId,@RequestParam Long itemId,@RequestParam int quantity, HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
         cartService.addItemToCart(userId, itemId, quantity);
         return new ResponseEntity<>("Item added successfully", HttpStatus.OK);
     }

@@ -3,14 +3,15 @@ services:
     container_name: postgres
     image: postgres:latest
     environment:
-      POSTGRES_DB: akasa
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-      PGDATA: /data/postgres
+      - POSTGRES_DB=akasa
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
     volumes:
-      - ./postgres-order:/data/postgres
+      - ./postgres-order:/var/lib/postgresql/data
     ports:
-      - "5431:5432"
+      - "5432:5431"
+    networks:
+      - bootapp
     restart: unless-stopped
 
   serviceregistry:
@@ -19,7 +20,11 @@ services:
     ports:
       - "8761:8761"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - spring.datasource.url=jdbc:postgresql://postgres:5432/akasa?createDatabaseIfNotExist=true
+      - spring.datasource.username=postgres
+      - spring.datasource.password=root
+    networks:
+      - bootapp
 
   apigateway:
     image: gateway:latest
@@ -27,10 +32,14 @@ services:
     ports:
       - "9000:9000"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - spring.datasource.url=jdbc:postgresql://postgres:5432/akasa?createDatabaseIfNotExist=true
+      - spring.datasource.username=postgres
+      - spring.datasource.password=root
     depends_on:
       - serviceregistry
       - userservice
+    networks:
+      - bootapp
 
   userservice:
     image: userservice:latest
@@ -38,9 +47,13 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - spring.datasource.url=jdbc:postgresql://postgres:5432/akasa?createDatabaseIfNotExist=true
+      - spring.datasource.username=postgres
+      - spring.datasource.password=root
     depends_on:
       - serviceregistry
+    networks:
+      - bootapp
 
   orderservice:
     image: orderservice:latest
@@ -48,10 +61,14 @@ services:
     ports:
       - "8086:8086"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - spring.datasource.url=jdbc:postgresql://postgres:5432/akasa?createDatabaseIfNotExist=true
+      - spring.datasource.username=postgres
+      - spring.datasource.password=root
     depends_on:
       - serviceregistry
       - apigateway
+    networks:
+      - bootapp
 
   inventoryservice:
     image: inventoryservice:latest
@@ -59,10 +76,14 @@ services:
     ports:
       - "8082:8082"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - spring.datasource.url=jdbc:postgresql://postgres:5432/akasa?createDatabaseIfNotExist=true
+      - spring.datasource.username=postgres
+      - spring.datasource.password=root
     depends_on:
       - serviceregistry
       - apigateway
+    networks:
+      - bootapp
 
   cartservice:
     image: cartservice:latest
@@ -70,9 +91,17 @@ services:
     ports:
       - "8084:8084"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - spring.datasource.url=jdbc:postgresql://postgres:5432/akasa?createDatabaseIfNotExist=true
+      - spring.datasource.username=postgres
+      - spring.datasource.password=root
     depends_on:
       - serviceregistry
       - apigateway
       - inventoryservice
       - userservice
+    networks:
+      - bootapp
+
+networks:
+  bootapp:
+    driver: bridge

@@ -22,4 +22,6 @@ public class InventoryItem {
     private double price;
     private String image;
 
+
+
 }

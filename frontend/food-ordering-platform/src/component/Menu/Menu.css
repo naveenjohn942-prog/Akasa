@@ -10,3 +10,9 @@
     flex-wrap: wrap;
     gap: 30px;
 }
+
+.menu-row {
+    display: grid;
+    grid-template-columns: 68% 30%;
+    background: #000;
+}

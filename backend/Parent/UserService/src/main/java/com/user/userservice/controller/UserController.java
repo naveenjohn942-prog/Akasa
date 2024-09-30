@@ -62,7 +62,7 @@ public class UserController {
         Optional<Users> existingUser = userRepository.findByEmail(user.getEmail());
 
         if (existingUser != null && passwordEncoder.matches(user.getPassword(), existingUser.get().getPassword())) {
-            return ResponseEntity.ok(existingUser);
+            return ResponseEntity.ok(existingUser.get());
         } else {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
