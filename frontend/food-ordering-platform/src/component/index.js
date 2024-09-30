@@ -37,7 +37,7 @@ const LandingPage = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Button variant="contained" color="secondary" href="/menu">
+              <Button variant="contained" color="secondary" href="/inventory">
                 Browse Menu
               </Button>
             </Grid>
