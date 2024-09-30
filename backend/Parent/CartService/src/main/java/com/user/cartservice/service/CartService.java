@@ -10,6 +10,6 @@ public interface CartService {
     void addItemToCart(Integer userId, Long itemId, int quantity);
     double calculateTotalPrice(List<CartItem> items);
     CartDTO viewCart(Integer userId);
-    CartDTO checkout(Integer userId);
+    CartDTO checkout(Integer userId) throws Exception;
     CartDTO removeItemFromCart(Integer userId, Long itemId);
 }

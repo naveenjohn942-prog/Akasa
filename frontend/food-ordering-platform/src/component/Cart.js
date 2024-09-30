@@ -14,7 +14,7 @@ useEffect(() => {
     <h1>Cart</h1> 
     <span>{data.user.name}</span>
     </div>
-    <CartList cart={data.cart} />
+    <CartList cart={data.cart} userId={data.user.userId}/>
       
     </div>
   )

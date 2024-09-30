@@ -33,7 +33,7 @@ public class CartController {
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity<String> checkout(@RequestParam Integer userId) {
+    public ResponseEntity<String> checkout(@RequestParam Integer userId, HttpServletRequest request) throws Exception {
         cartService.checkout(userId);
         return new ResponseEntity<>("Checkout successful", HttpStatus.OK);
     }

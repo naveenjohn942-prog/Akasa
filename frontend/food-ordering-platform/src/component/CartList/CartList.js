@@ -1,30 +1,68 @@
-import React, { useEffect } from 'react'
-import "./CartList.css"
+import React, { useState } from 'react';
+import './CartList.css';
 
+const CartList = ({ cart, userId }) => {
+  const [checkoutStatus, setCheckoutStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-const CartList = ({cart}) => {
+  // Checkout function to trigger API call
+  const handleCheckout = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('http://localhost:9000/cart/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: 2 }), 
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setCheckoutStatus('Checkout successful! Your order has been placed.');
+      } else {
+        const errorMessage = await response.text();
+        setCheckoutStatus(`Checkout failed: ${errorMessage}`);
+      }
+    } catch (error) {
+      setCheckoutStatus(`Checkout failed: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
- 
-      <ul className='cart-list'>
-        {cart?.map((item, index) => {
-               return (
-                <li key={item.itemId} className='cart-list-items'>
-   
-                <img src='https://www.shutterstock.com/image-photo/burger-tomateoes-lettuce-pickles-on-600nw-2309539129.jpg' className='cart-list-image' />
-                <div className='cart-list-info'>
-                <p className='cart-list-name'>{item.itemName}</p>
-                <span className='cart-list-btn'> <button>+</button>{item.quantity} <button>-</button></span>
-                </div>
-               <p className='cart-list-price'>{item.price}</p>
-            
-        </li>
-               )
-        })}
-
+    <div className="cart-container">
+      <ul className="cart-list">
+        {cart?.map((item) => (
+          <li key={item.itemId} className="cart-list-items">
+            <img
+              src={item.imageUrl}
+              alt={item.itemName}
+              className="cart-list-image"
+            />
+            <div className="cart-list-info">
+              <p className="cart-list-name">{item.itemName}</p>
+              <span className="cart-list-btn">
+                <button>+</button>
+                {item.quantity}
+                <button>-</button>
+              </span>
+            </div>
+            <p className="cart-list-price">{item.price}</p>
+          </li>
+        ))}
       </ul>
- 
-  )
-}
 
-export default CartList
+      {/* Checkout button */}
+      <button className="checkout-btn" onClick={handleCheckout} disabled={loading}>
+        {loading ? 'Processing...' : 'Checkout'}
+      </button>
+
+      {/* Display checkout status */}
+      {checkoutStatus && <p className="checkout-status">{checkoutStatus}</p>}
+    </div>
+  );
+};
+
+export default CartList;

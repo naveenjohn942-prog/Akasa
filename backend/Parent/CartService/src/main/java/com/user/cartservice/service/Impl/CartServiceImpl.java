@@ -68,6 +68,7 @@ public class CartServiceImpl implements CartService {
             newItem.setUserId(Long.valueOf(userId));
             newItem.setItemName(itemDTO.getName());
             newItem.setPrice(itemDTO.getPrice());
+            newItem.setImageUrl(itemDTO.getImageUrl());
             newItem.setQuantity(quantity);
             items.add(newItem);
         }
@@ -102,15 +103,33 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartDTO checkout(Integer userId) {
+    public CartDTO checkout(Integer userId) throws Exception {
         Optional<Cart> optionalCart = cartRepository.findByUserId(userId);
         if (optionalCart.isPresent()) {
             Cart cart = optionalCart.get();
-            // Checkout logic: clear the cart and finalize the order
+            List<String> outOfStockItems = new ArrayList<>();
+
+            for (CartItem item : cart.getItems()) {
+                Long itemId = item.getItemId();
+                int quantity = item.getQuantity();
+
+                ResponseEntity<Boolean> response = inventoryServiceFeignClient.checkStock(itemId, quantity);
+                if (response.getStatusCode() == HttpStatus.NOT_FOUND || !response.getBody()) {
+                    outOfStockItems.add(item.getItemName());
+                }
+            }
+
+            if (!outOfStockItems.isEmpty()) {
+                throw new Exception("The following items are out of stock: " + String.join(", ", outOfStockItems));
+            }
+
+            for (CartItem item : cart.getItems()) {
+                inventoryServiceFeignClient.deductStock(item.getItemId(), item.getQuantity());
+            }
+
             cart.getItems().clear();
             Cart savedCart = cartRepository.save(cart);
 
-            // Return the cleared cart
             return convertToDTO(savedCart);
         } else {
             throw new IllegalStateException("Cart not found for user ID: " + userId);

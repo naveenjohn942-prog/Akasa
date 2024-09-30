@@ -13,6 +13,6 @@ public class InventoryItemDTO {
     private String category;
     private int stock;
     private double price;
-    private String image;
+    private String imageUrl;
 
 }

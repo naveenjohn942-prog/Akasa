@@ -1,6 +1,17 @@
-# Dockerfile for eureka
+# Dockerfile for Eureka Service
 FROM openjdk:17-jdk-alpine
+
+# Create the necessary directory for the application
+RUN mkdir -p /user/app
+
+# Copy the jar file into the container
 COPY target/serviceregistry-0.0.1-SNAPSHOT.jar /user/app/serviceregistry-0.0.1-SNAPSHOT.jar
+
+# Set the working directory
 WORKDIR /user/app
-ENTRYPOINT ["java", "-jar", "/serviceregistry-0.0.1-SNAPSHOT.jar"]
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "serviceregistry-0.0.1-SNAPSHOT.jar"]
+
+# Expose the port
 EXPOSE 8761

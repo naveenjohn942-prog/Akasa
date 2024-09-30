@@ -13,4 +13,5 @@ public class CartItemDTO {
     private int quantity;
     private String itemName;
     private double price;
+    private String imageUrl;
 }
